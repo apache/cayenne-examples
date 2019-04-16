@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="org.apache.cayenne.demo.model"/>
+	<db-entity name="artist" catalog="cayenne">
+		<db-attribute name="artist_id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="artist_name" type="CHAR" isMandatory="true" length="254"/>
+		<db-attribute name="date_of_birth" type="DATE" length="10"/>
+	</db-entity>
+	<db-entity name="exhibit" catalog="cayenne">
+		<db-attribute name="closing_date" type="TIMESTAMP" isMandatory="true" length="26"/>
+		<db-attribute name="exhibit_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="gallery_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="opening_date" type="TIMESTAMP" isMandatory="true" length="26"/>
+	</db-entity>
+	<db-entity name="gallery" catalog="cayenne">
+		<db-attribute name="gallery_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="gallery_name" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
+	<db-entity name="painting" catalog="cayenne">
+		<db-attribute name="artist_id" type="BIGINT" length="19"/>
+		<db-attribute name="estimated_price" type="DECIMAL" length="16" scale="2"/>
+		<db-attribute name="painting_description" type="VARCHAR" length="255"/>
+		<db-attribute name="painting_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="painting_title" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="painting_exhibit" catalog="cayenne">
+		<db-attribute name="exhibit_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="painting_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="painting_info" catalog="cayenne">
+		<db-attribute name="image_blob" type="LONGVARBINARY" length="2147483647"/>
+		<db-attribute name="painting_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="review" type="LONGVARCHAR" length="2147483647"/>
+	</db-entity>
+	<obj-entity name="Artist" className="org.apache.cayenne.demo.model.Artist" dbEntityName="artist">
+		<obj-attribute name="dateOfBirth" type="java.time.LocalDate" db-attribute-path="date_of_birth"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="artist_name"/>
+	</obj-entity>
+	<obj-entity name="Exhibit" className="org.apache.cayenne.demo.model.Exhibit" dbEntityName="exhibit">
+		<obj-attribute name="closingDate" type="java.time.LocalDateTime" db-attribute-path="closing_date"/>
+		<obj-attribute name="openingDate" type="java.time.LocalDateTime" db-attribute-path="opening_date"/>
+	</obj-entity>
+	<obj-entity name="Gallery" className="org.apache.cayenne.demo.model.Gallery" dbEntityName="gallery">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="gallery_name"/>
+	</obj-entity>
+	<obj-entity name="Painting" className="org.apache.cayenne.demo.model.Painting" dbEntityName="painting">
+		<obj-attribute name="estimatedPrice" type="java.math.BigDecimal" db-attribute-path="estimated_price"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="painting_description"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="painting_title"/>
+	</obj-entity>
+	<obj-entity name="PaintingInfo" className="org.apache.cayenne.demo.model.PaintingInfo" dbEntityName="painting_info">
+		<obj-attribute name="review" type="java.lang.String" db-attribute-path="review"/>
+		<obj-attribute name="image" type="byte[]" db-attribute-path="image_blob"/>
+	</obj-entity>
+	<db-relationship name="paintings" source="artist" target="painting" toMany="true">
+		<db-attribute-pair source="artist_id" target="artist_id"/>
+	</db-relationship>
+	<db-relationship name="gallery" source="exhibit" target="gallery">
+		<db-attribute-pair source="gallery_id" target="gallery_id"/>
+	</db-relationship>
+	<db-relationship name="paintingExhibits" source="exhibit" target="painting_exhibit" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="exhibit_id" target="exhibit_id"/>
+	</db-relationship>
+	<db-relationship name="exhibits" source="gallery" target="exhibit" toMany="true">
+		<db-attribute-pair source="gallery_id" target="gallery_id"/>
+	</db-relationship>
+	<db-relationship name="paintingExhibits" source="painting" target="painting_exhibit" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="painting_id" target="painting_id"/>
+	</db-relationship>
+	<db-relationship name="painting" source="painting" target="painting_info" toDependentPK="true">
+		<db-attribute-pair source="painting_id" target="painting_id"/>
+	</db-relationship>
+	<db-relationship name="artist" source="painting" target="artist">
+		<db-attribute-pair source="artist_id" target="artist_id"/>
+	</db-relationship>
+	<db-relationship name="painting" source="painting_exhibit" target="painting">
+		<db-attribute-pair source="painting_id" target="painting_id"/>
+	</db-relationship>
+	<db-relationship name="exhibit" source="painting_exhibit" target="exhibit">
+		<db-attribute-pair source="exhibit_id" target="exhibit_id"/>
+	</db-relationship>
+	<db-relationship name="painting" source="painting_info" target="painting">
+		<db-attribute-pair source="painting_id" target="painting_id"/>
+	</db-relationship>
+	<obj-relationship name="paintings" source="Artist" target="Painting" deleteRule="Deny" db-relationship-path="paintings"/>
+	<obj-relationship name="gallery" source="Exhibit" target="Gallery" deleteRule="Nullify" db-relationship-path="gallery"/>
+	<obj-relationship name="paintings" source="Exhibit" target="Painting" db-relationship-path="paintingExhibits.painting"/>
+	<obj-relationship name="exhibits" source="Gallery" target="Exhibit" deleteRule="Deny" db-relationship-path="exhibits"/>
+	<obj-relationship name="painting" source="Painting" target="PaintingInfo" deleteRule="Nullify" db-relationship-path="painting"/>
+	<obj-relationship name="artist" source="Painting" target="Artist" deleteRule="Nullify" db-relationship-path="artist"/>
+	<obj-relationship name="exhibits" source="Painting" target="Exhibit" db-relationship-path="paintingExhibits.exhibit"/>
+	<obj-relationship name="painting" source="PaintingInfo" target="Painting" deleteRule="Nullify" db-relationship-path="painting"/>
+	<dbImport xmlns="http://cayenne.apache.org/schema/10/dbimport">
+		<catalog>
+			<name>cayenne</name>
+		</catalog>
+		<forceDataMapCatalog>false</forceDataMapCatalog>
+		<forceDataMapSchema>false</forceDataMapSchema>
+		<namingStrategy>org.apache.cayenne.dbsync.naming.DefaultObjectNameGenerator</namingStrategy>
+		<skipPrimaryKeyLoading>false</skipPrimaryKeyLoading>
+		<skipRelationshipsLoading>false</skipRelationshipsLoading>
+		<useJava7Types>false</useJava7Types>
+		<usePrimitives>true</usePrimitives>
+	</dbImport>
+	<cgen xmlns="http://cayenne.apache.org/schema/10/cgen">
+		<destDir>../java</destDir>
+		<mode>entity</mode>
+		<template>templates/v4_1/subclass.vm</template>
+		<superTemplate>templates/v4_1/superclass.vm</superTemplate>
+		<outputPattern>*.java</outputPattern>
+		<makePairs>true</makePairs>
+		<usePkgPath>true</usePkgPath>
+		<overwrite>false</overwrite>
+		<createPropertyNames>false</createPropertyNames>
+		<createPKProperties>false</createPKProperties>
+		<client>false</client>
+	</cgen>
+</data-map>
