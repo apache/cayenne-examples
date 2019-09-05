@@ -1,0 +1,15 @@
+target
+out
+.classpath
+.project
+.settings/
+.externalToolBuilders
+.DS_Store
+derby.log
+.metadata
+bin/
+.idea
+*.iml
+.factorypath
+build
+.gradle

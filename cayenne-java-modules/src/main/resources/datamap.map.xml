@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="com.bulackiy.persistent"/>
+	<db-entity name="ARTIST" catalog="test">
+		<db-attribute name="ARTIST_NAME" type="VARCHAR" length="100"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="PAINTING">
+		<db-attribute name="ARTIST_ID" type="INTEGER"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="PAINTING_TITLE" type="VARCHAR" length="255"/>
+	</db-entity>
+	<obj-entity name="Artist" className="org.apache.cayenne.example.persistent.Artist" dbEntityName="ARTIST">
+		<obj-attribute name="artistName" type="java.lang.String" db-attribute-path="ARTIST_NAME"/>
+	</obj-entity>
+	<obj-entity name="Painting" className="org.apache.cayenne.example.persistent.Painting" dbEntityName="PAINTING">
+		<obj-attribute name="paintingTitle" type="java.lang.String" db-attribute-path="PAINTING_TITLE"/>
+	</obj-entity>
+	<db-relationship name="paintings" source="ARTIST" target="PAINTING" toMany="true">
+		<db-attribute-pair source="ID" target="ARTIST_ID"/>
+	</db-relationship>
+	<db-relationship name="toArtist" source="PAINTING" target="ARTIST">
+		<db-attribute-pair source="ARTIST_ID" target="ID"/>
+	</db-relationship>
+	<obj-relationship name="paintings" source="Artist" target="Painting" deleteRule="Deny" db-relationship-path="paintings"/>
+	<obj-relationship name="toArtist" source="Painting" target="Artist" deleteRule="Nullify" db-relationship-path="toArtist"/>
+</data-map>
