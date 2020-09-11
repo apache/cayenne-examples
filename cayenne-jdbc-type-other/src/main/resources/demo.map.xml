@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="org.apache.cayenne.demo.model"/>
+	<property name="defaultSchema" value="public"/>
+	<db-entity name="test_geo">
+		<db-attribute name="area" type="OTHER" isMandatory="true" length="2147483647"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="test_json">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="json" type="OTHER" isMandatory="true" length="2147483647"/>
+		<db-attribute name="name" type="VARCHAR" length="255"/>
+	</db-entity>
+	<obj-entity name="TestGeo" className="org.apache.cayenne.demo.model.TestGeo" dbEntityName="test_geo">
+		<obj-attribute name="area" type="org.apache.cayenne.value.Wkt" db-attribute-path="area"/>
+	</obj-entity>
+	<obj-entity name="TestJson" className="org.apache.cayenne.demo.model.TestJson" dbEntityName="test_json">
+		<obj-attribute name="json" type="com.fasterxml.jackson.databind.node.ObjectNode" db-attribute-path="json"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<dbImport xmlns="http://cayenne.apache.org/schema/10/dbimport">
+		<schema>
+			<includeTable>
+				<name>test_geo</name>
+			</includeTable>
+			<includeTable>
+				<name>test_json</name>
+			</includeTable>
+			<name>public</name>
+		</schema>
+		<tableTypes>
+			<tableType>TABLE</tableType>
+			<tableType>VIEW</tableType>
+		</tableTypes>
+		<forceDataMapCatalog>false</forceDataMapCatalog>
+		<forceDataMapSchema>false</forceDataMapSchema>
+		<namingStrategy>org.apache.cayenne.dbsync.naming.DefaultObjectNameGenerator</namingStrategy>
+		<skipPrimaryKeyLoading>false</skipPrimaryKeyLoading>
+		<skipRelationshipsLoading>false</skipRelationshipsLoading>
+		<useJava7Types>false</useJava7Types>
+		<usePrimitives>true</usePrimitives>
+	</dbImport>
+	<cgen xmlns="http://cayenne.apache.org/schema/10/cgen">
+		<destDir>..\java</destDir>
+		<mode>entity</mode>
+		<template>templates/v4_1/subclass.vm</template>
+		<superTemplate>templates/v4_1/superclass.vm</superTemplate>
+		<outputPattern>*.java</outputPattern>
+		<makePairs>true</makePairs>
+		<usePkgPath>true</usePkgPath>
+		<overwrite>false</overwrite>
+		<createPropertyNames>false</createPropertyNames>
+		<createPKProperties>true</createPKProperties>
+		<client>false</client>
+	</cgen>
+</data-map>

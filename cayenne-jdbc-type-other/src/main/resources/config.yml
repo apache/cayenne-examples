@@ -1,0 +1,16 @@
+jdbc:
+  geo:
+    jdbcUrl: jdbc:postgresql://localhost:5432/cayenne-postgis
+    username: cayenne
+    password: cayenne
+  mysql:
+    jdbcUrl: jdbc:mysql://localhost:3306/cayenne-mysql?useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true&allowPublicKeyRetrieval=true&useSSL=false
+    username: cayenne
+    password: cayenne
+
+cayenne:
+  datasource: geo
+  createSchema: false
+  maps:
+    - location: classpath:demo.map.xml
+      name: map1
