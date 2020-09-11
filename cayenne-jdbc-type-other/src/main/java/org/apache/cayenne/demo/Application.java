@@ -14,7 +14,7 @@ public class Application extends BaseBQModule implements BQModuleProvider {
 
     public static void main(String[] args) {
         Bootique.app(args)
-                .args("--config=classpath:config.yml", "-g")
+                .args("--config=classpath:config.yml")
                 .module(b -> BQCoreModule.extend(b)
                         .addCommand(GeoTestCommand.class)
                         .addCommand(JsonTestCommand.class)

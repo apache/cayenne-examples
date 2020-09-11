@@ -23,6 +23,7 @@
 
         <compiler.plugin.version>3.8.1</compiler.plugin.version>
         <jar.plugin.version>3.2.0</jar.plugin.version>
+        <shade.plugin.version>3.2.1</shade.plugin.version>
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
     </properties>
@@ -98,8 +99,35 @@
                 <groupId>org.apache.cayenne.plugins</groupId>
                 <artifactId>cayenne-modeler-maven-plugin</artifactId>
                 <version>${cayenne.version}</version>
+                <configuration>
+                    <modelFile>${project.basedir}/src/main/resources/cayenne-demo.xml</modelFile>
+                </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.plugin.version}</version>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${main.class}</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

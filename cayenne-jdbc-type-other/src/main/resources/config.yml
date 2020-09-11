@@ -10,7 +10,7 @@ jdbc:
 
 cayenne:
   datasource: geo
-  createSchema: false
+  createSchema: true
   maps:
     - location: classpath:demo.map.xml
       name: map1
