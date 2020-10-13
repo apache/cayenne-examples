@@ -13,7 +13,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <bootique.version>2.0.M1</bootique.version>
-        <cayenne.version>4.2.M2-SNAPSHOT</cayenne.version>
+        <cayenne.version>4.2.M2</cayenne.version>
 
         <postgres.jdbc.version>9.4.1209</postgres.jdbc.version>
         <mysql.jdbc.version>8.0.21</mysql.jdbc.version>
@@ -27,20 +27,6 @@
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Snapshot Repository</name>
-            <url>https://repository.apache.org/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
