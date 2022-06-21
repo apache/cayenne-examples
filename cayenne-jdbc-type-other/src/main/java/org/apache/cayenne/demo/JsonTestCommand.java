@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -15,7 +14,11 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.demo.model.TestJson;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SQLExec;
+import org.apache.cayenne.value.Json;
 
+/**
+ * Command that demonstrates usage of the {@link Json} type
+ */
 class JsonTestCommand extends CommandWithMetadata {
 
     @Inject
@@ -45,12 +48,10 @@ class JsonTestCommand extends CommandWithMetadata {
     }
 
     private void createJsonObject(ObjectContext context) {
+        Pojo pojo = new Pojo(123, "abc", false);
+
         TestJson testJson = context.newObject(TestJson.class);
-        ObjectNode objectNode = new ObjectNode(objectMapper.getNodeFactory());
-        objectNode.put("test", 123);
-        objectNode.put("field1", "abc");
-        objectNode.put("field2", false);
-        testJson.setJson(objectNode);
+        testJson.setJson(objectMapper.valueToTree(pojo));
         context.commitChanges();
     }
 
@@ -70,5 +71,32 @@ class JsonTestCommand extends CommandWithMetadata {
 
         System.out.println("JSON values for path 'test':");
         testValues.forEach(v -> System.out.println("\t" + v));
+    }
+
+    /**
+     * Simple value-object to convert to Json
+     */
+    static class Pojo {
+        private final int test;
+        private final String field1;
+        private final boolean field2;
+
+        Pojo(int test, String field1, boolean field2) {
+            this.test = test;
+            this.field1 = field1;
+            this.field2 = field2;
+        }
+
+        public int getTest() {
+            return test;
+        }
+
+        public String getField1() {
+            return field1;
+        }
+
+        public boolean isField2() {
+            return field2;
+        }
     }
 }

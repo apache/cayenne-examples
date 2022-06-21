@@ -7,6 +7,9 @@ import org.apache.cayenne.access.types.ValueObjectType;
 import org.apache.cayenne.value.Json;
 import org.apache.cayenne.di.Inject;
 
+/**
+ * This value type allows to use Jackson's {@link ObjectNode} directly as a Json value
+ */
 public class JsonValueType implements ValueObjectType<ObjectNode, Json> {
 
     @Inject

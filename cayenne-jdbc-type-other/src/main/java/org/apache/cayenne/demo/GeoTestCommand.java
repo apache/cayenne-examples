@@ -14,6 +14,9 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SQLExec;
 import org.apache.cayenne.value.Wkt;
 
+/**
+ * Command that demonstrates usage of the {@link Wkt} type
+ */
 public class GeoTestCommand extends CommandWithMetadata {
 
     @Inject

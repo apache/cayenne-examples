@@ -12,5 +12,5 @@ cayenne:
   datasource: geo
   createSchema: true
   maps:
-    - location: classpath:demo.map.xml
-      name: map1
+    map1:
+      location: classpath:demo.map.xml
