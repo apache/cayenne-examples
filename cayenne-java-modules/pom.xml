@@ -11,7 +11,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <cayenne.version>4.1.B2</cayenne.version>
+        <cayenne.version>4.1.1</cayenne.version>
     </properties>
 
     <dependencies>
